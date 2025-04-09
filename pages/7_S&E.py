@@ -5,7 +5,7 @@ from pathlib import Path
 
 # Set page config
 st.set_page_config(
-    page_title="Ethanol - Industry Dashboard",
+    page_title="Sugar & Ethanol - Industry Dashboard",
     page_icon="⛽",
     layout="wide"
 )
