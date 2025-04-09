@@ -14,16 +14,31 @@ st.set_page_config(
 st.markdown("""
 <style>
 .market-card {
-    background-color: #f8f9fa;
+    background-color: #ffffff;
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #4CAF50;
+    border: 1px solid #000000;
 }
 .market-card h3 {
-    color: #2E7D32;
+    color: #000000;
     margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 5px;
+}
+.tab-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+.tab-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+.tab-list li:last-child {
+    border-bottom: none;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -43,7 +58,12 @@ with col1:
     st.markdown("""
     <div class="market-card">
         <h3>🥩 Beef</h3>
-        <p><strong>Discover the complete beef supply chain from farm to table.</strong> Our dashboard tracks live cattle and beef prices across major global markets including Brazil, U.S., China, Argentina, and Uruguay. Analyze price trends, market dynamics, and identify opportunities in this essential protein market.</p>
+        <ul class="tab-list">
+            <li>• Prices</li>
+            <li>• Production</li>
+            <li>• Trade Flow</li>
+            <li>• Supply & Demand</li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
     
@@ -51,7 +71,12 @@ with col1:
     st.markdown("""
     <div class="market-card">
         <h3>🍗 Chicken</h3>
-        <p><strong>Stay ahead in the poultry industry with comprehensive market intelligence.</strong> Monitor live chicken and processed chicken prices across Brazil, U.S., China, EU, and Saudi Arabia. Track production trends, consumption patterns, and trade flows to optimize your poultry business strategy.</p>
+        <ul class="tab-list">
+            <li>• Prices</li>
+            <li>• Production</li>
+            <li>• Trade Flow</li>
+            <li>• Supply & Demand</li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
     
@@ -59,7 +84,12 @@ with col1:
     st.markdown("""
     <div class="market-card">
         <h3>🥓 Pork</h3>
-        <p><strong>Navigate the complex pork market with confidence.</strong> Our dashboard provides detailed analysis of pork prices and market dynamics in Brazil, U.S., China, and EU. From live hog prices to processed pork products, gain insights into this versatile protein market.</p>
+        <ul class="tab-list">
+            <li>• Prices</li>
+            <li>• Production</li>
+            <li>• Trade Flow</li>
+            <li>• Supply & Demand</li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
 
@@ -69,7 +99,23 @@ with col2:
     st.markdown("""
     <div class="market-card">
         <h3>🥤 Beverages</h3>
-        <p><strong>Quench your thirst for beverage market knowledge.</strong> Explore comprehensive data on beverage prices and consumption trends across Brazil, Argentina, Dominican Republic, Guatemala, Chile, and Canada. From soft drinks to alcoholic beverages, track market developments and consumer preferences.</p>
+        <ul class="tab-list">
+            <li>• Prices</li>
+            <li>• Production</li>
+            <li>• Trade Flow</li>
+            <li>• Market Share</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Cookies & Pasta Card
+    st.markdown("""
+    <div class="market-card">
+        <h3>🍪 Cookies & Pasta</h3>
+        <ul class="tab-list">
+            <li>• Inflation</li>
+            <li>• Costs</li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
     
@@ -77,15 +123,24 @@ with col2:
     st.markdown("""
     <div class="market-card">
         <h3>🛢️ Biodiesel</h3>
-        <p><strong>Power your understanding of the renewable energy sector.</strong> Our dashboard tracks biodiesel production, prices, and market developments in Brazil, a global leader in biofuels. Monitor feedstock prices, production capacity, and policy impacts on this growing renewable energy market.</p>
+        <ul class="tab-list">
+            <li>• Prices</li>
+            <li>• Production</li>
+            <li>• Trade Flow</li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
     
-    # Ethanol Card
+    # Sugar and Ethanol Card
     st.markdown("""
     <div class="market-card">
-        <h3>⛽ Ethanol</h3>
-        <p><strong>Fuel your ethanol market analysis with real-time data.</strong> Monitor ethanol prices and market trends in Brazil and U.S., the world's largest ethanol producers. Track production, consumption, and trade flows to identify opportunities in this renewable fuel market.</p>
+        <h3>⛽ Sugar and Ethanol</h3>
+        <ul class="tab-list">
+            <li>• Prices</li>
+            <li>• Production</li>
+            <li>• Trade Flow</li>
+            <li>• Supply & Demand</li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
 
@@ -95,7 +150,11 @@ with col3:
     st.markdown("""
     <div class="market-card">
         <h3>🌾 Agribusiness</h3>
-        <p><strong>Cultivate success with comprehensive agribusiness insights.</strong> Access detailed data on agricultural commodity prices, investment funds performance, and supply & demand analysis. From grains to specialty crops, our dashboard helps you navigate the complex world of agribusiness.</p>
+        <ul class="tab-list">
+            <li>• Prices</li>
+            <li>• Funds</li>
+            <li>• Supply & Demand</li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
     
@@ -103,7 +162,11 @@ with col3:
     st.markdown("""
     <div class="market-card">
         <h3>📈 Markets</h3>
-        <p><strong>Chart your course through financial markets with precision.</strong> View real-time market prices and short positions across various commodities and assets. Identify market trends, analyze trading volumes, and discover investment opportunities in global markets.</p>
+        <ul class="tab-list">
+            <li>• Commodities</li>
+            <li>• Currencies</li>
+            <li>• Stocks</li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
     
@@ -111,7 +174,12 @@ with col3:
     st.markdown("""
     <div class="market-card">
         <h3>📊 Macro</h3>
-        <p><strong>See the big picture with macroeconomic indicators.</strong> Explore comprehensive data on economic growth, inflation, interest rates, and currency exchange rates for Brazil, U.S., and Argentina. Understand how broader economic trends impact industry performance.</p>
+        <ul class="tab-list">
+            <li>• GDP</li>
+            <li>• Inflation</li>
+            <li>• Interest Rates</li>
+            <li>• Exchange Rates</li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
 

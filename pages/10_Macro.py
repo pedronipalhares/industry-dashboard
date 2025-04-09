@@ -17,10 +17,14 @@ This page shows macroeconomic indicators across different countries.
 """)
 
 # Create tabs for different countries
-tab1, tab2, tab3 = st.tabs(["Brazil", "U.S.", "Argentina"])
+tab1, tab2, tab3, tab4 = st.tabs(["Currencies", "Brazil", "U.S.", "Argentina"])
+
+# Currencies Tab
+with tab1:
+    st.info("Currencies data will be added soon.")
 
 # Brazil Tab
-with tab1:
+with tab2:
     st.info("Brazil macroeconomic data will be added soon.")
 
 # U.S. Tab
