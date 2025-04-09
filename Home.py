@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from pathlib import Path
+from auth import is_authenticated, logout_user, require_auth
 
 # Set page config
 st.set_page_config(
@@ -9,6 +10,10 @@ st.set_page_config(
     page_icon="📊",
     layout="wide"
 )
+
+# Check authentication
+if not is_authenticated():
+    st.switch_page("pages/0_Login.py")
 
 # Custom CSS for cards
 st.markdown("""
@@ -43,10 +48,16 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# Add logout button in the top right
+col1, col2, col3 = st.columns([1, 3, 1])
+with col3:
+    if st.button("Logout"):
+        logout_user()
+
 # Title and description
 st.title("📊 Industry Dashboard")
-st.markdown("""
-Welcome to the Industry Dashboard! This comprehensive platform provides real-time insights and analysis across multiple industries, helping you make informed decisions in today's dynamic markets.
+st.markdown(f"""
+Welcome to the Industry Dashboard, {st.session_state.get('username', 'User')}! This comprehensive platform provides real-time insights and analysis across multiple industries, helping you make informed decisions in today's dynamic markets.
 """)
 
 # Create columns for the market sections

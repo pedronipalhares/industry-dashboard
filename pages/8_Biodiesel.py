@@ -3,6 +3,11 @@ import pandas as pd
 import plotly.express as px
 from pathlib import Path
 import datetime
+from auth import is_authenticated, require_auth
+
+# Check authentication
+if not is_authenticated():
+    st.switch_page("pages/0_Login.py")
 
 # Set page config
 st.set_page_config(
