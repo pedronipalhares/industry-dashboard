@@ -93,6 +93,19 @@ with col1:
     </div>
     """, unsafe_allow_html=True)
 
+    # Table Eggs Card
+    st.markdown("""
+    <div class="market-card">
+        <h3>🥚 Table Eggs</h3>
+        <ul class="tab-list">
+            <li>• Prices</li>
+            <li>• Production</li>
+            <li>• Trade Flow</li>
+            <li>• Supply & Demand</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
 # Second column
 with col2:
     # Beverages Card

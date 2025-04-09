@@ -78,7 +78,7 @@ def load_data():
 capacity_util_df, consumer_conf_df, inflation_df, bev_inflation_df, interest_rate_df, mom_inflation_df, retail_sales_df, unemployment_df = load_data()
 
 # Create tabs for different countries
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Brazil", "Argentina", "Dominic Republic", "Guatemala", "Chile", "Canada"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["Brazil", "Argentina", "Dominic Republic", "Guatemala", "Chile", "Canada","Panama"])
 
 # Brazil Tab
 with tab1:
@@ -262,3 +262,7 @@ with tab5:
 # Canada Tab
 with tab6:
     st.info("Canada beverage price data will be added soon.") 
+
+# Panama Tab
+with tab7:
+    st.info("Panama beverage price data will be added soon.") 

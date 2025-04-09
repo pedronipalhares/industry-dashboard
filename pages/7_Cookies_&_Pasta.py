@@ -27,3 +27,4 @@ with tab1:
 # Costs Tab
 with tab2:
     st.info("Costs data will be added soon.") 
+    

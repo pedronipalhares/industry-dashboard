@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from pathlib import Path
+from datetime import datetime, timedelta
 
 # Set page config
 st.set_page_config(
@@ -22,19 +23,26 @@ def load_data():
     chicken_price_path = Path("datasets/BR_CHICKEN_PRICE.csv")
     broiler_costs_path = Path("datasets/BR_BROILER_COSTS_STATE.csv")
     broiler_costs_breakdown_path = Path("datasets/BR_BROILER_COSTS_BREAKDOWN.csv")
+    eggs_path = Path("datasets/BR_EGGS.csv")
     
     chicken_df = pd.read_csv(chicken_price_path)
     broiler_costs_df = pd.read_csv(broiler_costs_path)
     broiler_costs_breakdown_df = pd.read_csv(broiler_costs_breakdown_path)
+    eggs_df = pd.read_csv(eggs_path)
     
     # Convert date columns to datetime
     chicken_df['DATE'] = pd.to_datetime(chicken_df['DATE'])
     broiler_costs_df['Date'] = pd.to_datetime(broiler_costs_df['Date'])
     broiler_costs_breakdown_df['Date'] = pd.to_datetime(broiler_costs_breakdown_df['Date'])
+    eggs_df['Date'] = pd.to_datetime(eggs_df['Date'])
     
-    return chicken_df, broiler_costs_df, broiler_costs_breakdown_df
+    # Filter eggs data for last 5 years
+    five_years_ago = datetime.now() - timedelta(days=5*365)
+    eggs_df = eggs_df[eggs_df['Date'] >= five_years_ago]
+    
+    return chicken_df, broiler_costs_df, broiler_costs_breakdown_df, eggs_df
 
-chicken_df, broiler_costs_df, broiler_costs_breakdown_df = load_data()
+chicken_df, broiler_costs_df, broiler_costs_breakdown_df, eggs_df = load_data()
 
 # Create tabs for different countries
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Brazil", "U.S.", "China", "EU", "Saudi Arabia"])
@@ -61,6 +69,12 @@ with tab1:
                            title='Feed Costs in Paraná',
                            labels={'R$_kg': 'Cost (BRL/kg)', 'Date': 'Date'})
         st.plotly_chart(fig_racao, use_container_width=True)
+        
+        # Meat Layers graph
+        fig_meat_layers = px.line(eggs_df, x='Date', y='MeatLayers',
+                                 title='Meat Layers in Brazil (Last 5 Years)',
+                                 labels={'MeatLayers': 'Number of Layers', 'Date': 'Date'})
+        st.plotly_chart(fig_meat_layers, use_container_width=True)
 
     # Broiler costs by state graph
     with col2:
@@ -86,6 +100,12 @@ with tab1:
                               title='Genetics Costs in Paraná',
                               labels={'R$_kg': 'Cost (BRL/kg)', 'Date': 'Date'})
         st.plotly_chart(fig_genetica, use_container_width=True)
+        
+        # Meat Eggs Produced graph
+        fig_meat_eggs = px.line(eggs_df, x='Date', y='MeatEggsProduced',
+                               title='Meat Eggs Produced in Brazil (Last 5 Years)',
+                               labels={'MeatEggsProduced': 'Eggs Produced', 'Date': 'Date'})
+        st.plotly_chart(fig_meat_eggs, use_container_width=True)
 
 # U.S. Tab
 with tab2:

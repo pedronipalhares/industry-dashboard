@@ -5,7 +5,7 @@ A comprehensive Streamlit web application that provides interactive visualizatio
 ## Features
 
 - 📊 Clean and intuitive user interface
-- 📈 Interactive data visualizations using Plotly
+- 📈 Interactive data visualizations using Steamlit
 - 🔍 Filterable data views
 - 📑 Multiple industry categories (Beef, Chicken, Beverages, etc.)
 - 🌍 Country-specific data analysis
