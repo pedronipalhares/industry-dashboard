@@ -27,7 +27,7 @@ def load_pullet_data():
     Returns:
         pandas.DataFrame: The pullet placement data
     """
-    file_path = 'datasets/pullet_placements_monthly_data.csv'
+    file_path = 'datasets/US_PULLET_PLACEMENTS_MONTHLY.csv'
     if not os.path.exists(file_path):
         print(f"Error: {file_path} not found")
         return None
@@ -108,10 +108,10 @@ def save_data_to_csv(df):
     if df is None or len(df) == 0:
         return None
     
-    # Create datasets directory if it doesn't exist
-    datasets_dir = 'datasets'
-    if not os.path.exists(datasets_dir):
-        os.makedirs(datasets_dir)
+    # Create processed_data directory if it doesn't exist
+    processed_data_dir = 'processed_data'
+    if not os.path.exists(processed_data_dir):
+        os.makedirs(processed_data_dir)
     
     # Format dates as strings for CSV
     output_df = df.copy()
@@ -126,7 +126,7 @@ def save_data_to_csv(df):
     ]
     
     # Create full file path
-    output_path = os.path.join(datasets_dir, 'pullet_cumulative_potential_placements.csv')
+    output_path = os.path.join(processed_data_dir, 'US_PULLET_CUMULATIVE_POTENTIAL_PLACEMENTS.csv')
     
     # Save to CSV
     output_df[columns_to_save].to_csv(output_path, index=False)
@@ -153,7 +153,7 @@ def main():
             # Save data to CSV
             save_data_to_csv(result_df)
             
-            print("\nAnalysis complete! Results saved to datasets and graphs directories.")
+            print("\nAnalysis complete! Results saved to processed_data directory.")
         else:
             print("Error: Failed to calculate cumulative potential placements.")
     else:

@@ -3,17 +3,17 @@ import os
 import numpy as np
 
 # Create output directory if it doesn't exist
-os.makedirs('datasets', exist_ok=True)
+os.makedirs('processed_data', exist_ok=True)
 
 def main():
     print("Starting layer yield analysis...")
     
     # Load hatching eggs data
-    eggs_df = pd.read_csv('datasets/broiler_hatching_eggs_monthly.csv')
+    eggs_df = pd.read_csv('datasets/US_BROILER_HATCHING_EGGS_MONTHLY.csv')
     print(f"Loaded eggs data with columns: {eggs_df.columns.tolist()}")
     
     # Load layer herd data
-    herd_df = pd.read_csv('datasets/broiler_breeder_layer_herd_monthly.csv')
+    herd_df = pd.read_csv('datasets/US_BROILER_BREEDER_HERD_MONTHLY.csv')
     print(f"Loaded herd data with columns: {herd_df.columns.tolist()}")
     
     # Ensure both datasets have the same date format
@@ -66,7 +66,7 @@ def main():
     merged_df['Yield_LTM'] = merged_df['Yield'].rolling(window=12).mean()
     
     # Save data to CSV
-    output_path = 'datasets/layer_yield_analysis.csv'
+    output_path = 'processed_data/US_LAYER_YIELD_ANALYSIS.csv'
     merged_df.to_csv(output_path, index=False)
     
     print(f"Analysis complete. Results saved to {output_path}")

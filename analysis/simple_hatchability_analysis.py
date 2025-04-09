@@ -4,9 +4,9 @@ import datetime
 
 # Settings
 INCUBATION_PERIOD_WEEKS = 3  # Standard incubation period (21 days ≈ 3 weeks)
-EGGS_DATA_PATH = 'datasets/egg_set_weekly_data.csv'
-PLACEMENTS_DATA_PATH = 'datasets/chicken_placements_weekly_data.csv'
-OUTPUT_DATA_PATH = 'datasets/hatchability_analysis.csv'
+EGGS_DATA_PATH = 'datasets/US_BROILER_EGG_SET_WEEKLY.csv'
+PLACEMENTS_DATA_PATH = 'datasets/US_CHICKEN_PLACEMENTS_WEEKLY.csv'
+OUTPUT_DATA_PATH = 'processed_data/HATCHABILITY_ANALYSIS.csv'
 
 def load_data():
     """

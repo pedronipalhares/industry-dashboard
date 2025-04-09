@@ -23,8 +23,8 @@ def load_data():
     Returns:
         tuple: (regular_df, cumulative_df)
     """
-    regular_file = 'datasets/pullet_placements_monthly_data.csv'
-    cumulative_file = 'datasets/pullet_cumulative_potential_placements.csv'
+    regular_file = 'datasets/US_PULLET_PLACEMENTS_MONTHLY.csv'
+    cumulative_file = 'datasets/US_PULLET_CUMULATIVE_POTENTIAL_PLACEMENTS.csv'
     
     if not os.path.exists(regular_file) or not os.path.exists(cumulative_file):
         print(f"Error: Required files not found")
@@ -156,16 +156,16 @@ def save_data_to_csv(regular_df, cumulative_df):
         tuple: (regular_output_path, cumulative_output_path)
     """
     # Ensure output directory exists
-    os.makedirs('datasets', exist_ok=True)
+    os.makedirs('processed_data', exist_ok=True)
     
     # Save regular monthly YoY growth
-    regular_output_path = 'datasets/pullet_placement_monthly_yoy_growth.csv'
+    regular_output_path = 'processed_data/US_PULLET_PLACEMENT_MONTHLY_YOY_GROWTH.csv'
     if regular_df is not None:
         regular_df.to_csv(regular_output_path, index=False)
         print(f"Saved regular monthly YoY growth data to {regular_output_path}")
     
     # Save cumulative YoY growth
-    cumulative_output_path = 'datasets/pullet_placement_cumulative_yoy_growth.csv'
+    cumulative_output_path = 'processed_data/US_PULLET_PLACEMENT_CUMULATIVE_YOY_GROWTH.csv'
     if cumulative_df is not None:
         cumulative_df.to_csv(cumulative_output_path, index=False)
         print(f"Saved cumulative YoY growth data to {cumulative_output_path}")
@@ -179,7 +179,7 @@ def main():
     print("Starting Pullet Placement YoY Growth Analysis...")
     
     # Create output directory
-    os.makedirs('datasets', exist_ok=True)
+    os.makedirs('processed_data', exist_ok=True)
     
     # Load data
     regular_df, cumulative_df = load_data()
@@ -194,7 +194,7 @@ def main():
         # Save results to CSV
         if regular_yoy_df is not None and cumulative_yoy_df is not None:
             save_data_to_csv(regular_yoy_df, cumulative_yoy_df)
-            print("\nAnalysis complete! Results saved to datasets directory.")
+            print("\nAnalysis complete! Results saved to processed_data directory.")
         else:
             print("Error: Failed to calculate YoY growth rates.")
     else:

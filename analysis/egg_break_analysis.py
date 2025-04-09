@@ -7,10 +7,10 @@ import calendar
 def load_data():
     """Load the required datasets"""
     # Load eggs produced (monthly data)
-    eggs_produced_df = pd.read_csv('datasets/broiler_hatching_eggs_monthly.csv')
+    eggs_produced_df = pd.read_csv('datasets/US_BROILER_HATCHING_EGGS_MONTHLY.csv')
     
     # Load eggs set (weekly data)
-    eggs_set_df = pd.read_csv('datasets/egg_set_weekly_data.csv')
+    eggs_set_df = pd.read_csv('datasets/US_BROILER_EGG_SET_WEEKLY.csv')
     
     return eggs_produced_df, eggs_set_df
 
@@ -133,7 +133,7 @@ def main():
     print("Starting egg break analysis...")
     
     # Create output directory
-    os.makedirs('datasets', exist_ok=True)
+    os.makedirs('processed_data', exist_ok=True)
     
     # Load data
     eggs_produced_df, eggs_set_df = load_data()
@@ -155,7 +155,7 @@ def main():
         print(f"Successfully calculated egg break metrics for {len(result_df)} months")
     
     # Save results to CSV
-    output_path = 'datasets/egg_break_analysis.csv'
+    output_path = 'processed_data/EGG_BREAK_ANALYSIS.csv'
     result_df.to_csv(output_path, index=False)
     
     print(f"Analysis complete. Results saved to {output_path}")

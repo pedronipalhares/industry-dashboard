@@ -15,7 +15,7 @@ import numpy as np
 from datetime import datetime
 
 # Create output directory if it doesn't exist
-os.makedirs('datasets', exist_ok=True)
+os.makedirs('processed_data', exist_ok=True)
 
 def process_yoy_growth_data(data_df, value_column):
     """
@@ -87,7 +87,7 @@ def load_and_process_egg_set_data():
     Returns:
         pandas.DataFrame: Processed egg set data with YoY growth
     """
-    input_file = 'datasets/egg_set_weekly_data.csv'
+    input_file = 'datasets/US_BROILER_EGG_SET_WEEKLY.csv'
     
     if not os.path.exists(input_file):
         print(f"Error: {input_file} not found")
@@ -123,7 +123,7 @@ def load_and_process_egg_set_data():
     result_df = process_yoy_growth_data(df, 'Eggs Set')
     
     # Save to CSV
-    output_file = 'datasets/egg_set_yoy_growth.csv'
+    output_file = 'processed_data/US_EGG_SET_YOY_GROWTH.csv'
     result_df.to_csv(output_file, index=False)
     print(f"Saved egg set YoY growth data to {output_file}")
     
@@ -136,7 +136,7 @@ def load_and_process_placements_data():
     Returns:
         pandas.DataFrame: Processed placements data with YoY growth
     """
-    input_file = 'datasets/chicken_placements_weekly_data.csv'
+    input_file = 'datasets/US_CHICKEN_PLACEMENTS_WEEKLY.csv'
     
     if not os.path.exists(input_file):
         print(f"Error: {input_file} not found")
@@ -172,7 +172,7 @@ def load_and_process_placements_data():
     result_df = process_yoy_growth_data(df, 'Placements')
     
     # Save to CSV
-    output_file = 'datasets/placements_yoy_growth.csv'
+    output_file = 'processed_data/US_PLACEMENTS_YOY_GROWTH.csv'
     result_df.to_csv(output_file, index=False)
     print(f"Saved placements YoY growth data to {output_file}")
     
@@ -183,7 +183,7 @@ def main():
     print("Starting YoY Growth Data Processing...")
     
     # Create output directory
-    os.makedirs('datasets', exist_ok=True)
+    os.makedirs('processed_data', exist_ok=True)
     
     # Process egg set data
     egg_set_df = load_and_process_egg_set_data()
@@ -192,7 +192,7 @@ def main():
     placements_df = load_and_process_placements_data()
     
     if egg_set_df is not None and placements_df is not None:
-        print("\nAnalysis complete! Results saved to datasets directory.")
+        print("\nAnalysis complete! Results saved to processed_data directory.")
     else:
         print("\nWarning: Some analyses couldn't be completed due to missing data.")
 

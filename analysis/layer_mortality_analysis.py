@@ -25,8 +25,8 @@ def load_data():
     Returns:
         tuple: (placements_df, herd_df)
     """
-    potential_file = 'datasets/pullet_cumulative_potential_placements.csv'
-    herd_file = 'datasets/broiler_breeder_layer_herd_monthly.csv'
+    potential_file = 'datasets/US_PULLET_CUMULATIVE_POTENTIAL_PLACEMENTS.csv'
+    herd_file = 'datasets/US_BROILER_BREEDER_HERD_MONTHLY.csv'
     
     if not os.path.exists(potential_file) or not os.path.exists(herd_file):
         print(f"Error: Required files not found")
@@ -100,10 +100,10 @@ def save_data_to_csv(df):
         str: Path to the saved CSV file
     """
     # Ensure output directory exists
-    os.makedirs('datasets', exist_ok=True)
+    os.makedirs('processed_data', exist_ok=True)
     
     # Save to CSV
-    output_path = 'datasets/layer_mortality_rates.csv'
+    output_path = 'processed_data/LAYER_MORTALITY_RATES.csv'
     df.to_csv(output_path, index=False)
     
     print(f"Saved mortality rate data to {output_path}")
@@ -146,7 +146,7 @@ def main():
     print("Starting Layer Mortality Analysis...")
     
     # Create output directory
-    os.makedirs('datasets', exist_ok=True)
+    os.makedirs('processed_data', exist_ok=True)
     
     # Load data
     potential_df, herd_df = load_data()
@@ -163,11 +163,11 @@ def main():
             comparative_data = create_comparative_view(mortality_df)
             
             # Save comparative view to CSV
-            comparative_output_path = 'datasets/layer_flock_comparison_data.csv'
+            comparative_output_path = 'processed_data/LAYER_FLOCK_COMPARISON_DATA.csv'
             comparative_data.to_csv(comparative_output_path, index=False)
             print(f"Saved comparative data to {comparative_output_path}")
             
-            print("\nAnalysis complete! Results saved to datasets directory.")
+            print("\nAnalysis complete! Results saved to processed_data directory.")
         else:
             print("Error: Failed to calculate mortality rates.")
     else:

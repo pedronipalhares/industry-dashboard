@@ -10,10 +10,10 @@ This script analyzes various aspects of the US chicken industry:
 It processes and saves the data to CSV files for visualization in the Streamlit app.
 
 The script uses data from:
-- datasets/egg_set_weekly_data.csv
-- datasets/chicken_placements_weekly_data.csv
-- datasets/hatchability_analysis.csv
-- datasets/chicken_slaughter_monthly_data.csv
+- datasets/US_BROILER_EGG_SET_WEEKLY.csv
+- datasets/US_CHICKEN_PLACEMENTS_WEEKLY.csv
+- datasets/HATCHABILITY_ANALYSIS.csv
+- datasets/US_CHICKEN_SLAUGHTER_MONTHLY.csv
 """
 
 import os
@@ -25,6 +25,9 @@ import csv
 # Ensure the datasets directory exists
 os.makedirs('datasets', exist_ok=True)
 
+# Ensure the processed_data directory exists
+os.makedirs('processed_data', exist_ok=True)
+
 #######################
 # Data Loading Functions
 #######################
@@ -33,8 +36,8 @@ def load_egg_and_placement_data():
     """Load egg set and chicken placement data from CSV files"""
     print("Loading egg set and placement data...")
     
-    egg_set_data = pd.read_csv('datasets/egg_set_weekly_data.csv')
-    placements_data = pd.read_csv('datasets/chicken_placements_weekly_data.csv')
+    egg_set_data = pd.read_csv('datasets/US_BROILER_EGG_SET_WEEKLY.csv')
+    placements_data = pd.read_csv('datasets/US_CHICKEN_PLACEMENTS_WEEKLY.csv')
     
     # Process egg set data - add Year and Week columns if they don't exist
     if 'year' in egg_set_data.columns and 'Year' not in egg_set_data.columns:
@@ -81,7 +84,7 @@ def load_hatchability_data():
     """Load hatchability data from CSV file"""
     print("Loading hatchability data...")
     
-    file_path = 'datasets/hatchability_analysis.csv'
+    file_path = 'datasets/HATCHABILITY_ANALYSIS.csv'
     if not os.path.exists(file_path):
         print(f"Error: {file_path} not found")
         return None
@@ -98,7 +101,7 @@ def load_slaughter_data():
     """Load chicken slaughter data from CSV file"""
     print("Loading chicken slaughter data...")
     
-    file_path = 'datasets/chicken_slaughter_monthly_data.csv'
+    file_path = 'datasets/US_CHICKEN_SLAUGHTER_MONTHLY.csv'
     if not os.path.exists(file_path):
         print(f"Error: {file_path} not found")
         return None
@@ -251,7 +254,7 @@ def analyze_breeder_breeder_layer_herd():
     """Analyze broiler breeder layer herd data"""
     print("Analyzing broiler breeder layer herd data...")
     
-    file_path = 'datasets/broiler_breeder_layer_herd_monthly.csv'
+    file_path = 'datasets/US_BROILER_BREEDER_HERD_MONTHLY.csv'
     if not os.path.exists(file_path):
         print(f"Error: {file_path} not found")
         return None
@@ -273,7 +276,7 @@ def analyze_breeder_breeder_layer_herd():
         df[f'YoY_Growth_{year_lag}y'] = df['Layer_Herd'].pct_change(12 * year_lag) * 100
     
     # Save LTM data to CSV
-    ltm_output_path = 'datasets/breeder_herd_ltm_average.csv'
+    ltm_output_path = 'processed_data/US_BREEDER_HERD_LTM_AVERAGE.csv'
     df.to_csv(ltm_output_path, index=False)
     print(f"Saved broiler breeder layer herd LTM data to {ltm_output_path}")
     
@@ -291,7 +294,7 @@ def analyze_breeder_breeder_layer_herd():
     ).reset_index()
     
     # Save YoY growth data to CSV
-    yoy_output_path = 'datasets/breeder_herd_yoy_growth.csv'
+    yoy_output_path = 'processed_data/US_BREEDER_HERD_YOY_GROWTH.csv'
     yoy_growth_df.to_csv(yoy_output_path)
     print(f"Saved broiler breeder layer herd YoY growth data to {yoy_output_path}")
     
@@ -313,18 +316,18 @@ def analyze_egg_and_placement_data():
     placements_growth = calculate_yoy_growth(placements_data, 'Placements')
     
     # Save to CSV
-    egg_set_output = 'datasets/egg_set_yoy_growth_analysis.csv'
+    egg_set_output = 'processed_data/US_EGG_SET_YOY_GROWTH_ANALYSIS.csv'
     egg_set_growth.to_csv(egg_set_output, index=False)
     print(f"Saved egg set YoY growth analysis to {egg_set_output}")
     
-    placements_output = 'datasets/placements_yoy_growth_analysis.csv'
+    placements_output = 'processed_data/US_PLACEMENTS_YOY_GROWTH_ANALYSIS.csv'
     placements_growth.to_csv(placements_output, index=False)
     print(f"Saved placements YoY growth analysis to {placements_output}")
     
     # Process hatchability data
     hatchability_data = load_hatchability_data()
     if hatchability_data is not None:
-        hatchability_output = 'datasets/hatchability_ltm_analysis.csv'
+        hatchability_output = 'processed_data/US_HATCHABILITY_LTM_ANALYSIS.csv'
         hatchability_data.to_csv(hatchability_output, index=False)
         print(f"Saved hatchability LTM analysis to {hatchability_output}")
     
@@ -347,29 +350,29 @@ def analyze_slaughter_data():
         return
     
     # Save processed slaughter data
-    slaughter_output = 'datasets/chicken_slaughter_processed.csv'
+    slaughter_output = 'processed_data/US_CHICKEN_SLAUGHTER_PROCESSED.csv'
     processed_data.to_csv(slaughter_output, index=False)
     print(f"Saved processed slaughter data to {slaughter_output}")
     
     # Process and save heads YoY growth
-    heads_output = 'datasets/chicken_slaughter_heads_yoy_growth.csv'
+    heads_output = 'processed_data/US_CHICKEN_SLAUGHTER_HEADS_YOY_GROWTH.csv'
     processed_data.to_csv(heads_output, index=False)
     print(f"Saved chicken slaughter heads YoY growth to {heads_output}")
     
     # Process and save LTM avg weights
-    weights_output = 'datasets/chicken_slaughter_ltm_avg_weights.csv'
+    weights_output = 'processed_data/US_CHICKEN_SLAUGHTER_LTM_AVG_WEIGHTS.csv'
     processed_data.to_csv(weights_output, index=False)
     print(f"Saved chicken slaughter LTM avg weights to {weights_output}")
     
     # Process and save volume YoY growth
-    volume_output = 'datasets/chicken_slaughter_volume_yoy_growth.csv'
+    volume_output = 'processed_data/US_CHICKEN_SLAUGHTER_VOLUME_YOY_GROWTH.csv'
     processed_data.to_csv(volume_output, index=False)
     print(f"Saved chicken slaughter volume YoY growth to {volume_output}")
     
     # Process and save seasonal production
     seasonal_data = process_seasonal_production(processed_data)
     if seasonal_data is not None:
-        seasonal_output = 'datasets/chicken_slaughter_seasonal_production.csv'
+        seasonal_output = 'processed_data/US_CHICKEN_SLAUGHTER_SEASONAL_PRODUCTION.csv'
         seasonal_data.to_csv(seasonal_output, index=False)
         print(f"Saved chicken slaughter seasonal production to {seasonal_output}")
     
@@ -379,8 +382,8 @@ def main():
     """Main function to run all analyses"""
     print("Starting US Chicken Industry Analysis...")
     
-    # Create datasets directory if it doesn't exist
-    os.makedirs('datasets', exist_ok=True)
+    # Create processed_data directory if it doesn't exist
+    os.makedirs('processed_data', exist_ok=True)
     
     # Analyze egg set and placement data
     analyze_egg_and_placement_data()
@@ -395,9 +398,9 @@ def main():
     print("Generated datasets:")
     
     # List all generated datasets
-    for file in sorted(os.listdir('datasets')):
-        if file.startswith(('chicken_slaughter', 'egg_set', 'placements', 'hatchability', 'breeder_herd')):
-            print(f"  - datasets/{file}")
+    for file in sorted(os.listdir('processed_data')):
+        if file.startswith(('US_CHICKEN_SLAUGHTER', 'US_BROILER_EGG_SET', 'US_CHICKEN_PLACEMENTS', 'US_HATCHABILITY', 'US_BREEDER_HERD')):
+            print(f"  - processed_data/{file}")
 
 if __name__ == "__main__":
     main() 

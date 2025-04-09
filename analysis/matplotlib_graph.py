@@ -2,7 +2,7 @@ import csv
 import os
 
 # Settings
-INPUT_DATA_PATH = 'datasets/hatchability_analysis.csv'
+INPUT_DATA_PATH = 'processed_data/HATCHABILITY_ANALYSIS.csv'
 
 def load_hatchability_data():
     """
