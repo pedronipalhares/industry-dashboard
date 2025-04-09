@@ -21,17 +21,20 @@ This page shows beef prices and cattle prices across different countries.
 def load_data():
     beef_price_path = Path("datasets/BR_BEEF_PRICES.csv")
     cattle_price_path = Path("datasets/BR_CATTLE_PRICE.csv")
+    cattle_herd_path = Path("datasets/BR_CATTLE_HERD.csv")
     
     beef_df = pd.read_csv(beef_price_path)
     cattle_df = pd.read_csv(cattle_price_path)
+    cattle_herd_df = pd.read_csv(cattle_herd_path)
     
     # Convert date columns to datetime
     beef_df['DATE'] = pd.to_datetime(beef_df['DATE'])
     cattle_df['DATE'] = pd.to_datetime(cattle_df['DATE'])
+    cattle_herd_df['Date'] = pd.to_datetime(cattle_herd_df['Date'])
     
-    return beef_df, cattle_df
+    return beef_df, cattle_df, cattle_herd_df
 
-beef_df, cattle_df = load_data()
+beef_df, cattle_df, cattle_herd_df = load_data()
 
 # Create tabs for different countries
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Brazil", "U.S.", "China", "Argentina", "Uruguay"])
@@ -47,12 +50,18 @@ with tab1:
                            title='Beef Prices in Brazil',
                            labels={'BR_BEEF_PRICES': 'Price (BRL/kg)', 'DATE': 'Date'})
         st.plotly_chart(fig_beef, use_container_width=True)
+        
+        # Cattle herd graph below beef price graph
+        fig_herd = px.line(cattle_herd_df, x='Date', y='Cattle', 
+                           title='Cattle Herd in Brazil',
+                           labels={'Cattle': 'Number of Cattle', 'Date': 'Year'})
+        st.plotly_chart(fig_herd, use_container_width=True)
 
     # Cattle price graph
     with col2:
         fig_cattle = px.line(cattle_df, x='DATE', y='BR_CATTLE_PRICE', 
                              title='Cattle Prices in Brazil',
-                             labels={'BR_CATTLE_PRICE': 'Price (BRL/kg)', 'DATE': 'Date'})
+                             labels={'BR_CATTLE_PRICE': 'Price (BRL/@)', 'DATE': 'Date'})
         st.plotly_chart(fig_cattle, use_container_width=True)
 
 # U.S. Tab

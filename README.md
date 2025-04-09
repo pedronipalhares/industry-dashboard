@@ -1,16 +1,16 @@
-# Industry Dashboard Dataset Downloader
+# Industry Dashboard
 
-A Streamlit web application that provides easy access to download various industry-related datasets. The app presents all available datasets in a clean, tabular format with individual download buttons for each dataset.
+A comprehensive Streamlit web application that provides interactive visualizations and analysis of various industry-related datasets. The app presents data across multiple categories with interactive charts and filters.
 
 ## Features
 
 - 📊 Clean and intuitive user interface
-- 📑 Table view of all available datasets
-- ⚡ Quick download buttons for each dataset
-- 🔍 Alphabetically sorted dataset list
-- �� Responsive design
 - 📈 Interactive data visualizations using Plotly
+- 🔍 Filterable data views
+- 📑 Multiple industry categories (Beef, Chicken, Beverages, etc.)
+- 🌍 Country-specific data analysis
 - 🔄 Real-time data updates
+- 📱 Responsive design
 
 ## Installation
 
@@ -34,31 +34,41 @@ streamlit run app.py
 
 2. The app will open in your default web browser at `http://localhost:8501`
 
-3. Browse through the available datasets in the table
-4. Click the download button next to any dataset to download it as a CSV file
-5. Explore interactive visualizations for each dataset
+3. Navigate through the different pages using the sidebar
+4. Explore interactive visualizations for each industry category
+5. Use filters to focus on specific time periods or regions
 
 ## Project Structure
 
 ```
 industry-dashboard/
-├── app.py              # Main Streamlit application
-├── data/               # Dataset storage directory
-├── requirements.txt    # Project dependencies
-└── README.md          # Project documentation
+├── app.py                # Main Streamlit application
+├── pages/                # Streamlit pages
+│   ├── 1_Home.py         # Home page
+│   ├── 2_Beef.py         # Beef industry analysis
+│   ├── 3_Chicken.py      # Chicken industry analysis
+│   ├── 4_Sugar.py        # Sugar industry analysis
+│   ├── 5_Beverages.py    # Beverages industry analysis
+│   └── ...               # Other industry pages
+├── datasets/             # Dataset storage directory
+├── requirements.txt      # Project dependencies
+└── README.md            # Project documentation
 ```
 
-## Available Datasets
+## Available Industry Categories
 
-The application provides access to various industry-related datasets, including:
-- Agricultural commodity prices
-- Currency exchange rates
-- Economic indicators
-- Production data
-- Market prices
+The application provides analysis for various industry categories, including:
+- Beef (prices, cattle herd, costs)
+- Chicken (prices, broiler costs, feed costs)
+- Sugar (prices, production, exports)
+- Beverages (capacity utilization, prices)
 - And more...
 
-All datasets are sourced from reliable public APIs and databases, ensuring data accuracy and reliability.
+Each category includes country-specific data with interactive visualizations.
+
+## Data Sources
+
+All datasets are sourced from reliable public APIs and databases, ensuring data accuracy and reliability. The data is regularly updated to provide the most current information.
 
 ## Requirements
 
