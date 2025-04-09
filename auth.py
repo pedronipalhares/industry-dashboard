@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import secrets
 import string
+import re
 
 # File to store user credentials
 USERS_FILE = "users.json"
@@ -27,9 +28,18 @@ def hash_password(password):
     """Hash a password using SHA-256"""
     return hashlib.sha256(password.encode()).hexdigest()
 
-def register_user(username, password):
+def is_valid_email(email):
+    """Check if the email format is valid"""
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern, email) is not None
+
+def register_user(username, email, password):
     """Register a new user"""
     init_users()
+    
+    # Validate email
+    if not is_valid_email(email):
+        return False, "Invalid email format"
     
     # Load existing users
     with open(USERS_FILE, "r") as f:
@@ -39,8 +49,16 @@ def register_user(username, password):
     if username in users:
         return False, "Username already exists"
     
-    # Add new user
-    users[username] = hash_password(password)
+    # Check if email already exists
+    for user_data in users.values():
+        if isinstance(user_data, dict) and user_data.get('email') == email:
+            return False, "Email already registered"
+    
+    # Add new user with email
+    users[username] = {
+        'password': hash_password(password),
+        'email': email
+    }
     
     # Save updated users
     with open(USERS_FILE, "w") as f:
@@ -57,8 +75,12 @@ def login_user(username, password):
         users = json.load(f)
     
     # Check if username exists and password is correct
-    if username in users and users[username] == hash_password(password):
-        return True, "Login successful"
+    if username in users:
+        user_data = users[username]
+        # Handle both old format (just password) and new format (dict with password and email)
+        stored_password = user_data['password'] if isinstance(user_data, dict) else user_data
+        if stored_password == hash_password(password):
+            return True, "Login successful"
     
     return False, "Invalid username or password"
 
@@ -83,8 +105,8 @@ def generate_reset_token():
     alphabet = string.ascii_letters + string.digits
     return ''.join(secrets.choice(alphabet) for _ in range(32))
 
-def request_password_reset(username):
-    """Request a password reset for a user"""
+def request_password_reset(email):
+    """Request a password reset for a user by email"""
     init_users()
     init_reset_tokens()
     
@@ -92,9 +114,16 @@ def request_password_reset(username):
     with open(USERS_FILE, "r") as f:
         users = json.load(f)
     
-    # Check if username exists
-    if username not in users:
-        return False, "Username not found"
+    # Find username by email
+    username = None
+    for uname, user_data in users.items():
+        if isinstance(user_data, dict) and user_data.get('email') == email:
+            username = uname
+            break
+    
+    if not username:
+        # Don't reveal if email exists or not for security
+        return True, "If your email is registered, you will receive a password reset link."
     
     # Generate reset token
     token = generate_reset_token()
@@ -135,7 +164,14 @@ def reset_password(token, new_password):
         users = json.load(f)
     
     # Update password
-    users[username] = hash_password(new_password)
+    if isinstance(users[username], dict):
+        users[username]['password'] = hash_password(new_password)
+    else:
+        # Handle old format
+        users[username] = {
+            'password': hash_password(new_password),
+            'email': ''  # Default empty email for old accounts
+        }
     
     # Save updated users
     with open(USERS_FILE, "w") as f:
