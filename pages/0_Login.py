@@ -1,5 +1,5 @@
 import streamlit as st
-from auth import login_user, register_user, is_authenticated
+from auth import login_user, register_user, is_authenticated, request_password_reset, reset_password
 
 # Set page config
 st.set_page_config(
@@ -15,8 +15,8 @@ if is_authenticated():
 # Title
 st.title("🔒 Login to Industry Dashboard")
 
-# Create tabs for login and registration
-tab1, tab2 = st.tabs(["Login", "Register"])
+# Create tabs for login, registration, and forgot password
+tab1, tab2, tab3 = st.tabs(["Login", "Register", "Forgot Password"])
 
 # Login tab
 with tab1:
@@ -49,5 +49,38 @@ with tab2:
                 success, message = register_user(new_username, new_password)
                 if success:
                     st.success(message)
+                else:
+                    st.error(message)
+
+# Forgot Password tab
+with tab3:
+    st.markdown("### Request Password Reset")
+    with st.form("forgot_password_form"):
+        reset_username = st.text_input("Enter your username")
+        submit = st.form_submit_button("Request Reset Token")
+        
+        if submit:
+            success, message = request_password_reset(reset_username)
+            if success:
+                st.success(message)
+                st.info("In a production environment, this token would be sent to your email.")
+            else:
+                st.error(message)
+    
+    st.markdown("### Reset Password")
+    with st.form("reset_password_form"):
+        reset_token = st.text_input("Enter your reset token")
+        new_password = st.text_input("New Password", type="password")
+        confirm_password = st.text_input("Confirm New Password", type="password")
+        submit = st.form_submit_button("Reset Password")
+        
+        if submit:
+            if new_password != confirm_password:
+                st.error("Passwords do not match")
+            else:
+                success, message = reset_password(reset_token, new_password)
+                if success:
+                    st.success(message)
+                    st.info("You can now log in with your new password.")
                 else:
                     st.error(message) 
