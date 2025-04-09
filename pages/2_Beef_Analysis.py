@@ -26,8 +26,8 @@ def load_data():
     cattle_df = pd.read_csv(cattle_price_path)
     
     # Convert date columns to datetime
-    beef_df['date'] = pd.to_datetime(beef_df['date'])
-    cattle_df['date'] = pd.to_datetime(cattle_df['date'])
+    beef_df['DATE'] = pd.to_datetime(beef_df['DATE'])
+    cattle_df['DATE'] = pd.to_datetime(cattle_df['DATE'])
     
     return beef_df, cattle_df
 
@@ -37,13 +37,13 @@ beef_df, cattle_df = load_data()
 st.write("### Beef vs Cattle Prices in Brazil")
 
 # Create a figure with secondary y-axis
-fig = px.line(beef_df, x='date', y='price', 
+fig = px.line(beef_df, x='DATE', y='BR_BEEF_PRICES', 
               title='Beef and Cattle Prices in Brazil',
-              labels={'price': 'Beef Price (BRL/kg)', 'date': 'Date'},
+              labels={'BR_BEEF_PRICES': 'Beef Price (BRL/kg)', 'DATE': 'Date'},
               color_discrete_sequence=['#FF5733'])
 
 # Add cattle price as a second line
-fig.add_scatter(x=cattle_df['date'], y=cattle_df['price'], 
+fig.add_scatter(x=cattle_df['DATE'], y=cattle_df['BR_CATTLE_PRICE'], 
                 name='Cattle Price', line=dict(color='#33A1FF'),
                 yaxis='y2')
 
@@ -74,12 +74,12 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.write("#### Beef Price Statistics")
-    beef_stats = beef_df['price'].describe()
+    beef_stats = beef_df['BR_BEEF_PRICES'].describe()
     st.dataframe(beef_stats)
 
 with col2:
     st.write("#### Cattle Price Statistics")
-    cattle_stats = cattle_df['price'].describe()
+    cattle_stats = cattle_df['BR_CATTLE_PRICE'].describe()
     st.dataframe(cattle_stats)
 
 # Add correlation analysis
@@ -87,7 +87,7 @@ st.write("### Price Correlation")
 st.write("The correlation between beef and cattle prices indicates how closely these markets move together.")
 
 # Calculate correlation
-correlation = beef_df.set_index('date')['price'].corr(cattle_df.set_index('date')['price'])
+correlation = beef_df.set_index('DATE')['BR_BEEF_PRICES'].corr(cattle_df.set_index('DATE')['BR_CATTLE_PRICE'])
 st.metric("Correlation Coefficient", f"{correlation:.2f}")
 
 # Interpretation
