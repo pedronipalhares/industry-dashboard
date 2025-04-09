@@ -67,9 +67,14 @@ with tab8:
         # Create a custom month order starting from April
         df['Month_Order'] = df['Month'].apply(lambda x: x-3 if x >= 4 else x+9)
         
-        # Filter for last three years
+        # Create Harvest Year (starts in April)
+        df['Harvest_Year'] = df.apply(lambda row: row['Year'] if row['Month'] >= 4 else row['Year'] - 1, axis=1)
+        
+        # Filter for last three harvest years
         current_year = datetime.datetime.now().year
-        df = df[df['Year'] >= current_year - 2]
+        current_month = datetime.datetime.now().month
+        current_harvest_year = current_year if current_month >= 4 else current_year - 1
+        df = df[df['Harvest_Year'] >= current_harvest_year - 2]
         
         return df
     
@@ -85,15 +90,15 @@ with tab8:
         fig1 = px.line(acc_data, 
                        x='Month_Name', 
                        y='BR_CONSECANA_ACC',
-                       color='Year',
+                       color='Harvest_Year',
                        title='Brazil CONSECANA Accumulated',
-                       labels={'BR_CONSECANA_ACC': 'BR CONSECANA ACC', 'Month_Name': 'Month'},
+                       labels={'BR_CONSECANA_ACC': 'BR CONSECANA ACC', 'Month_Name': 'Month', 'Harvest_Year': 'Harvest Year'},
                        category_orders={'Month_Name': ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar']})
         
         fig1.update_layout(
             xaxis_title="Month (April to March)",
             yaxis_title="BR CONSECANA ACC",
-            legend_title="Year"
+            legend_title="Harvest Year"
         )
         
         st.plotly_chart(fig1, use_container_width=True)
@@ -103,15 +108,15 @@ with tab8:
         fig2 = px.line(monthly_data, 
                        x='Month_Name', 
                        y='BR_CONSECANA_MONTHLY',
-                       color='Year',
+                       color='Harvest_Year',
                        title='Brazil CONSECANA Monthly',
-                       labels={'BR_CONSECANA_MONTHLY': 'BR CONSECANA Monthly', 'Month_Name': 'Month'},
+                       labels={'BR_CONSECANA_MONTHLY': 'BR CONSECANA Monthly', 'Month_Name': 'Month', 'Harvest_Year': 'Harvest Year'},
                        category_orders={'Month_Name': ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar']})
         
         fig2.update_layout(
             xaxis_title="Month (April to March)",
             yaxis_title="BR CONSECANA Monthly",
-            legend_title="Year"
+            legend_title="Harvest Year"
         )
         
         st.plotly_chart(fig2, use_container_width=True)
