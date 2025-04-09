@@ -8,7 +8,9 @@ A Streamlit web application that provides easy access to download various indust
 - 📑 Table view of all available datasets
 - ⚡ Quick download buttons for each dataset
 - 🔍 Alphabetically sorted dataset list
-- 📱 Responsive design
+- �� Responsive design
+- 📈 Interactive data visualizations using Plotly
+- 🔄 Real-time data updates
 
 ## Installation
 
@@ -34,6 +36,17 @@ streamlit run app.py
 
 3. Browse through the available datasets in the table
 4. Click the download button next to any dataset to download it as a CSV file
+5. Explore interactive visualizations for each dataset
+
+## Project Structure
+
+```
+industry-dashboard/
+├── app.py              # Main Streamlit application
+├── data/               # Dataset storage directory
+├── requirements.txt    # Project dependencies
+└── README.md          # Project documentation
+```
 
 ## Available Datasets
 
@@ -45,12 +58,19 @@ The application provides access to various industry-related datasets, including:
 - Market prices
 - And more...
 
+All datasets are sourced from reliable public APIs and databases, ensuring data accuracy and reliability.
+
 ## Requirements
 
 - Python 3.9 or higher
 - Streamlit 1.32.0
 - Pandas 2.2.1
+- Plotly 5.18.0
 
 ## Contributing
 
 Feel free to submit issues and enhancement requests! 
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 
