@@ -13,7 +13,7 @@ st.set_page_config(
 # Title and description
 st.title("🥩 Beef Price Analysis")
 st.markdown("""
-This page shows the relationship between beef prices and cattle prices in Brazil over time.
+This page shows beef prices and cattle prices in Brazil over time.
 """)
 
 # Load the data
@@ -33,39 +33,22 @@ def load_data():
 
 beef_df, cattle_df = load_data()
 
-# Create the visualization
-st.write("### Beef vs Cattle Prices in Brazil")
+# Create two columns for side-by-side graphs
+col1, col2 = st.columns(2)
 
-# Create a figure with secondary y-axis
-fig = px.line(beef_df, x='DATE', y='BR_BEEF_PRICES', 
-              title='Beef and Cattle Prices in Brazil',
-              labels={'BR_BEEF_PRICES': 'Beef Price (BRL/kg)', 'DATE': 'Date'},
-              color_discrete_sequence=['#FF5733'])
+# Beef price graph
+with col1:
+    fig_beef = px.line(beef_df, x='DATE', y='BR_BEEF_PRICES', 
+                       title='Beef Prices in Brazil',
+                       labels={'BR_BEEF_PRICES': 'Price (BRL/kg)', 'DATE': 'Date'})
+    st.plotly_chart(fig_beef, use_container_width=True)
 
-# Add cattle price as a second line
-fig.add_scatter(x=cattle_df['DATE'], y=cattle_df['BR_CATTLE_PRICE'], 
-                name='Cattle Price', line=dict(color='#33A1FF'),
-                yaxis='y2')
-
-# Update layout for dual y-axis
-fig.update_layout(
-    yaxis2=dict(
-        title='Cattle Price (BRL/kg)',
-        overlaying='y',
-        side='right'
-    ),
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="right",
-        x=1
-    ),
-    hovermode='x unified'
-)
-
-# Display the chart
-st.plotly_chart(fig, use_container_width=True)
+# Cattle price graph
+with col2:
+    fig_cattle = px.line(cattle_df, x='DATE', y='BR_CATTLE_PRICE', 
+                         title='Cattle Prices in Brazil',
+                         labels={'BR_CATTLE_PRICE': 'Price (BRL/kg)', 'DATE': 'Date'})
+    st.plotly_chart(fig_cattle, use_container_width=True)
 
 # Add some statistics
 st.write("### Price Statistics")
