@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 from pathlib import Path
 from datetime import datetime
 
@@ -25,12 +26,14 @@ def load_data():
     cattle_herd_path = Path("datasets/BR_CATTLE_HERD.csv")
     ar_food_path = Path("datasets/AR_FOOD.csv")
     au_cattle_path = Path("datasets/AU_CATTLE_PRICE.csv")
+    cattle_cycle_path = Path("datasets/BR_CATTLE_CYCLE.csv")
     
     beef_df = pd.read_csv(beef_price_path)
     cattle_df = pd.read_csv(cattle_price_path)
     cattle_herd_df = pd.read_csv(cattle_herd_path)
     ar_food_df = pd.read_csv(ar_food_path)
     au_cattle_df = pd.read_csv(au_cattle_path)
+    cattle_cycle_df = pd.read_csv(cattle_cycle_path)
     
     # Convert date columns to datetime
     beef_df['DATE'] = pd.to_datetime(beef_df['DATE'])
@@ -46,9 +49,25 @@ def load_data():
     au_cattle_df['Month'] = au_cattle_df['DATE'].dt.strftime('%b')
     au_cattle_df['Year'] = au_cattle_df['DATE'].dt.year
     
-    return beef_df, cattle_df, cattle_herd_df, ar_food_df, au_cattle_df
+    # Calculate the ratio between beef prices and cattle prices
+    # Convert cattle price from R$/@ (15kg) to R$/kg
+    beef_df = beef_df.merge(cattle_df, on='DATE', how='inner')
+    beef_df['CATTLE_PRICE_PER_KG'] = beef_df['BR_CATTLE_PRICE'] / 15
+    beef_df['PRICE_RATIO'] = beef_df['BR_BEEF_PRICES'] / beef_df['CATTLE_PRICE_PER_KG']
+    
+    # Process cattle cycle data
+    # Create a date column from Year and Quarter
+    cattle_cycle_df['Date'] = pd.to_datetime(cattle_cycle_df['Year'].astype(str) + '-' + 
+                                            (cattle_cycle_df['Quarter'] * 3).astype(str) + '-01')
+    
+    # Calculate LTM (Last Twelve Months) averages
+    cattle_cycle_df = cattle_cycle_df.sort_values('Date')
+    cattle_cycle_df['LTM_Female_Slaughtered'] = cattle_cycle_df['Percentage_of_Females_Slaughtered'].rolling(window=4).mean()
+    cattle_cycle_df['LTM_Calf_Cattle_Ratio'] = cattle_cycle_df['Calf_Cattle_Ratio'].rolling(window=4).mean()
+    
+    return beef_df, cattle_df, cattle_herd_df, ar_food_df, au_cattle_df, cattle_cycle_df
 
-beef_df, cattle_df, cattle_herd_df, ar_food_df, au_cattle_df = load_data()
+beef_df, cattle_df, cattle_herd_df, ar_food_df, au_cattle_df, cattle_cycle_df = load_data()
 
 # Create tabs for different countries
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Brazil", "U.S.", "China", "Argentina", "Uruguay", "Australia"])
@@ -70,6 +89,75 @@ with tab1:
                            title='Cattle Herd in Brazil',
                            labels={'Cattle': 'Number of Cattle', 'Date': 'Year'})
         st.plotly_chart(fig_herd, use_container_width=True)
+        
+        # Cattle cycle indicators graph
+        fig_cycle = go.Figure()
+        
+        # Add LTM Female Slaughtered line
+        fig_cycle.add_trace(
+            go.Scatter(
+                x=cattle_cycle_df['Date'],
+                y=cattle_cycle_df['LTM_Female_Slaughtered'] * 100,  # Convert to percentage
+                name='LTM Female Slaughtered %',
+                line=dict(color='blue')
+            )
+        )
+        
+        # Add LTM Calf Cattle Ratio line on secondary y-axis
+        fig_cycle.add_trace(
+            go.Scatter(
+                x=cattle_cycle_df['Date'],
+                y=cattle_cycle_df['LTM_Calf_Cattle_Ratio'],
+                name='LTM Calf/Cattle Ratio',
+                line=dict(color='red'),
+                yaxis='y2'
+            )
+        )
+        
+        # Update layout for dual y-axes with improved formatting
+        fig_cycle.update_layout(
+            title='Cattle Cycle Indicators - LTM Averages',
+            xaxis=dict(
+                title='',
+                showline=True,
+                linewidth=1,
+                linecolor='black',
+                showgrid=False
+            ),
+            yaxis=dict(
+                title='',
+                titlefont=dict(color='blue'),
+                showline=True,
+                linewidth=1,
+                linecolor='black',
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='lightgray',
+                tickformat='.1f'  # Format as percentage with 1 decimal place
+            ),
+            yaxis2=dict(
+                title='',
+                titlefont=dict(color='red'),
+                overlaying='y',
+                side='right',
+                showline=True,
+                linewidth=1,
+                linecolor='black',
+                showgrid=False,
+                tickformat='.3f'  # Format with 3 decimal places
+            ),
+            legend=dict(
+                orientation="h",
+                yanchor="top",
+                y=-0.2,
+                xanchor="center",
+                x=0.5
+            ),
+            plot_bgcolor='white',
+            margin=dict(b=80)  # Add bottom margin to accommodate the legend
+        )
+        
+        st.plotly_chart(fig_cycle, use_container_width=True)
 
     # Cattle price graph
     with col2:
@@ -77,6 +165,17 @@ with tab1:
                              title='Cattle Prices in Brazil',
                              labels={'BR_CATTLE_PRICE': 'Price (BRL/@)', 'DATE': 'Date'})
         st.plotly_chart(fig_cattle, use_container_width=True)
+        
+        # Price ratio graph (Beef price / Cattle price)
+        # Filter for the last twelve months
+        current_date = datetime.now()
+        twelve_months_ago = current_date.replace(year=current_date.year - 1)
+        recent_ratio_data = beef_df[beef_df['DATE'] >= twelve_months_ago]
+        
+        fig_ratio = px.line(recent_ratio_data, x='DATE', y='PRICE_RATIO',
+                           title='Beef to Cattle Price Ratio (R$/kg) - Last 12 Months',
+                           labels={'PRICE_RATIO': 'Ratio (Beef/Cattle)', 'DATE': 'Date'})
+        st.plotly_chart(fig_ratio, use_container_width=True)
 
 # U.S. Tab
 with tab2:
